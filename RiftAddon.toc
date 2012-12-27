@@ -1,0 +1,18 @@
+Identifier = "AOMRift"
+ 
+Name = "AOM Rift"
+ 
+Description = "Rift specific api"
+ 
+Author = "Bryan Hazelbaker"
+ 
+Version = "1"
+ 
+Email = "bryan.hazelbaker@gmail.com"
+ 
+Environment = "1.9"
+
+RunOnStartup = {
+    "AOMRift.lua",
+    "AOMRiftWindow.lua",
+}
