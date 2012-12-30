@@ -14,5 +14,6 @@ Environment = "1.9"
 
 RunOnStartup = {
     "AOMRift.lua",
-    "AOMRiftWindow.lua",
+    "AOMRiftUI.lua",
+    "AOMRiftAchievement.lua"
 }
