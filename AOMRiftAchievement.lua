@@ -3,13 +3,18 @@
 
 -- Our object.
 AOMRift.Achievement = {
+  detail = {},
+  category = {},
+  -- Copy of detail object.
   id = nil,
   name = nil,
   description = nil,
-  requirement ={},
+  previous = nil,
+  requirement = {},
+  -- Some new values.
   complete = nil,
-  detail = {},
-  category = {},
+  current = nil,
+
 }
 
 --
@@ -52,11 +57,14 @@ function AOMRift.Achievement:load(achievement_id)
   o.detail = Inspect.Achievement.Detail(achievement_id)
   o.category = Inspect.Achievement.Category.Detail(o.detail.category)
   -- Map detail record to base object.
-  o.id = o.detail.id
-  o.name = o.detail.name
+  o.id          = o.detail.id
+  o.name        = o.detail.name
   o.description = o.detail.description
   o.requirement = o.detail.requirement
-  o.complete = o:is_complete()
+  o.previous    = o.detail.previous
+  -- Calculate some new values.
+  o.current     = o:is_current()
+  o.complete    = o:is_complete()
   
   return o
 end
@@ -131,6 +139,25 @@ function AOMRift.Achievement:get_complete()
     if requirement["complete"] == true then
       table.insert(report, requirement)
     end    
+  end
+  return report
+end
+
+--
+-- Determine if achievement has no previous achievements that are
+-- still waiting to be completed, making this achievement the current
+-- next to be achieved.
+--
+-- @return
+--   (bool) true if this achievement is the next to be gained, false
+--   otherwise.
+function AOMRift.Achievement:is_current()
+  local report = true
+  if self.previous ~= nil then
+    pre_achievement = AOMRift.Achievement:load(self.previous)
+    if pre_achievement.complete == false then
+      report = false
+    end
   end
   return report
 end
