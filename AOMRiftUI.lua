@@ -71,7 +71,7 @@ function AOMRift.UI:CloseButton(frame, top, right, width, height, image, source)
     width  = width,
     height = height,
     top    = top,
-    left   = (frame:GetWidth() - width) + right,
+    right  = right,
   }
   local background = {
     image  = image or "images/close.png",
@@ -93,26 +93,23 @@ end
 -- @param frame parentFrame
 --   The parent frame.
 -- @param table position (optional)
---   If width and height are not specified then top, left, right and bottom
---   are padding that the new child window should have between itself and it's
---   parent. Positive values shrink the child window, negative expand. 
---   If width and height are specified then top and left are used as x and y
---   coordinates within the parent frame; right and bottom will be ignored.
---   All values default to 0:
---   - int width: The width of the child frame.
---   - int height: The height of the child frame.
---   - int top: Padding between top edges of child and parent frames
---              OR y coordinate of child frame inside parent.
---   - int left: Padding between left edges of child and parent frames
---   -           OR x coordinate of child frame inside parent.
+--   Top, left, right and bottom are padding that the new child window should
+--   have between itself and it's parent. Positive values shrink the child 
+--   window, negative expand. If width and height are specified then only
+--   one set of padding (two values) are required (top/left, top/right,
+--   bottom/left, bottom/right). 
+--   - int width: (optional) The width of the child frame.
+--   - int height: (optional) The height of the child frame.
+--   - int top: Padding between top edges of child and parent frames.
+--   - int left: Padding between left edges of child and parent frames.
 --   - int right: Padding between right edges of child and parent frames.
 --   - int bottom: Padding between bottom edges of child and parent frames.
 -- @param table background (optional)
 --   Color, transparancy and image that the background should have. All values
 --   default to 0, alpha defaults to 1:
---   - int red: Red color value (0-255).
---   - int green: Green color value (0-255).
---   - int blue: Blue color value (0-255).
+--   - int red: Red color value (0-1).
+--   - int green: Green color value (0-1).
+--   - int blue: Blue color value (0-1).
 --   - int alpha: Transparacy setting (0 = transparent, 1 = opaque).
 --   - string image: Path to an image to display as background. If image
 --     is specified then RGB values will be ignored.
@@ -136,21 +133,12 @@ end
 --
 function AOMRift.UI:Content(parentFrame, position, background, childFrameType)
   local content = nil
-  local defaultAlpha = 1
   local childFrameType = childFrameType or "Frame"
   if type(position) ~= "table" then
-    position = { top = 0, right = 0, bottom = 0, left = 0, width = 0, height = 0 }
+    position = { top = 0, right = 0, bottom = 0, left = 0 }
   end
-  position = {
-    width  = position.width or 0,
-    height = position.height or 0,
-    top    = position.top or 0,
-    right  = position.right or 0,
-    bottom = position.bottom or 0,
-    left   = position.left or 0,
-  }
   if type(background) ~= "table" then
-    background = { source = nil, image = nil, red = 0, green = 0, blue = 0, alpha = defaultAlpha }
+    background = { red = 0, green = 0, blue = 0, alpha = 1 }
   end
 --  if background.image then
 --    defaultAlpha = 0
@@ -161,7 +149,7 @@ function AOMRift.UI:Content(parentFrame, position, background, childFrameType)
     red    = background.red or 0,
     green  = background.green or 0,
     blue   = background.blue or 0,
-    alpha  = background.alpha or defaultAlpha,
+    alpha  = background.alpha or 1,
   }
 
   if self.debug == true then
@@ -176,15 +164,26 @@ function AOMRift.UI:Content(parentFrame, position, background, childFrameType)
     content:SetTexture(background.source, background.image)
     content:SetAlpha(background.alpha)  
   end
-  content:SetPoint("TOPLEFT", parentFrame, "TOPLEFT", position.left, position.top)
-  -- Aboslute positioning.
-  if (position.width > 0) then
-    content:SetWidth(position.width)
-    content:SetHeight(position.height)
-  -- Relative positioning with padding.
-  else
-    content:SetPoint("BOTTOMRIGHT", parentFrame, "BOTTOMRIGHT", -(position.right), -(position.bottom))
+  -- Size the new frame.
+  if (position["left"] ~= nil and position["top"] ~= nil) then
+    content:SetPoint("TOPLEFT", parentFrame, "TOPLEFT", position.left, position.top)
   end
+  if (position["right"] ~= nil and position["top"] ~= nil) then
+    content:SetPoint("TOPRIGHT", parentFrame, "TOPRIGHT", -position.right, position.top)
+  end
+  if (position["left"] ~= nil and position["bottom"] ~= nil) then
+    content:SetPoint("BOTTOMLEFT", parentFrame, "BOTTOMLEFT", position.left, -position.bottom)
+  end
+  if (position["right"] ~= nil and position["bottom"] ~= nil) then
+    content:SetPoint("BOTTOMRIGHT", parentFrame, "BOTTOMRIGHT", -position.right, -position.bottom)
+  end
+  if (position.width ~= nil) then
+    content:SetWidth(position.width)
+  end
+  if (position.height ~= nil) then
+    content:SetHeight(position.height)
+  end
+  -- Layer and make visible.  
   content:SetLayer(5)
   content:SetVisible(true)
   return content
@@ -198,18 +197,18 @@ end
 function AOMRift.UI:Border(frame, side, depth, background)
   depth = depth or 5
   if (string.lower(side) == "top") then
-    position = {width = frame:GetWidth(), height = depth, top = 0, left = 0}
+    position = {height = depth, top = 0, left = 0, right = 0}
   end
   if (string.lower(side) == "bottom") then
-    position = {width = frame:GetWidth(), height = depth, top = (frame:GetHeight() - depth), left = 0}
+    position = {height = depth, bottom = 0, left = 0, right = 0}
   end
   if (string.lower(side) == "left") then
-    position = {width = depth, height = frame:GetHeight(), top = 0, left = 0}
+    position = {width = depth, bottom = 0, top = 0, left = 0}
   end
   if (string.lower(side) == "right") then
-    position = {width = depth, height = frame:GetHeight(), top = 0, left = (frame:GetWidth() - depth)}
+    position = {width = depth, bottom = 0, top = 0, right = 0}
   end
-  bar = self:Content(frame, position, background)  
+  bar = self:Content(frame, position, background)
   return bar
 end
 
@@ -226,19 +225,20 @@ function AOMRift.UI:Window(title, width, height)
   local context = UI.CreateContext(title)
   local window = UI.CreateFrame("Frame", title, context)
   window:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
-  window:SetWidth(width + 10)
-  window:SetHeight(height + 35)
+  window:SetWidth(width + 2)
+  window:SetHeight(height + 12)
   window:SetBackgroundColor(0, 0, 0, 0)
   window:SetVisible(true)
   -- Make the window draggable.
-  self:Draggable(window)  
+  self:Draggable(window)
   -- Setup the borders.
-  window.borderTop    = self:Border(window, "top",    25)
-  window.borderBottom = self:Border(window, "bottom", 10)
-  window.borderLeft   = self:Border(window, "left",   5)
-  window.borderRight  = self:Border(window, "right",  5)
-  window.content = self:Content(window, {top=25, right=5, bottom=10, left=5}, {alpha=0.5}) 
+  window.borderTop    = self:Border(window, "top",    10)
+  window.borderBottom = self:Border(window, "bottom", 2)
+  window.borderLeft   = self:Border(window, "left",   1)
+  window.borderRight  = self:Border(window, "right",  1)
+  -- Setup content area.
+  window.content = self:Content(window, {top=10, right=1, bottom=2, left=1}, {alpha=0.5}) 
   -- Add a close button.
-  self:CloseButton(window, -5, 5, 20, 20)
+  self:CloseButton(window, -5, -5, 20, 20)
   return window
 end
