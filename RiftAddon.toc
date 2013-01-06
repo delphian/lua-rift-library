@@ -1,19 +1,19 @@
-Identifier = "AOMRift"
- 
-Name = "AOM Rift"
- 
-Description = "Rift specific api"
- 
+Identifier = "aomLibRift"
+
+Name = "AOM Rift Library"
+
+Description = "Rift library providing helper functions to make life eaiser."
+
 Author = "Bryan Hazelbaker"
- 
-Version = "1"
- 
+
+Version = "2.1-0.5"
+
 Email = "bryan.hazelbaker@gmail.com"
- 
-Environment = "1.9"
+
+Environment = "2.1"
 
 RunOnStartup = {
-    "AOMRift.lua",
-    "AOMRiftUI.lua",
-    "AOMRiftAchievement.lua"
+    "main.lua",
+    "ui.lua",
+    "achievement.lua"
 }
