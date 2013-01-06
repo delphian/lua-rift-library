@@ -1,6 +1,6 @@
-Identifier = "aomLibRift"
+Identifier = "luaRiftLibrary"
 
-Name = "AOM Rift Library"
+Name = "Lua Rift Library"
 
 Description = "Rift library providing helper functions to make life eaiser."
 
