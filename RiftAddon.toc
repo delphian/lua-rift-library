@@ -13,6 +13,7 @@ Email = "bryan.hazelbaker@gmail.com"
 Environment = "2.1"
 
 RunOnStartup = {
+    "lua-php-library/main.lua",
     "main.lua",
     "ui.lua",
     "achievement.lua"
