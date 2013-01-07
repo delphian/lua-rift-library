@@ -213,6 +213,14 @@ function AOMRift.UI:Border(frame, side, depth, background)
 end
 
 --
+-- Resize a window. Reframes borders around new window size.
+--
+function AOMRift.UI:resize(window, width, height)
+  window:SetWidth(width)
+  window:SetHeight(height)
+end
+
+--
 -- Create a RiftWindow that is dragable.
 -- Example:
 --   rw = AOMRift.UI:window("My Window", 200, 300)
