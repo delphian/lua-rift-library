@@ -16,5 +16,6 @@ RunOnStartup = {
     "lua-php-library/main.lua",
     "main.lua",
     "ui.lua",
-    "achievement.lua"
+    "achievement.lua",
+    "currency.lua",
 }
