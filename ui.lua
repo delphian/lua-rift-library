@@ -190,6 +190,31 @@ function AOMRift.UI:Content(parentFrame, position, background, childFrameType)
 end
 
 --
+--
+--
+function AOMRift.UI:Attatch(childFrame, parentFrame, side)
+  if ((type(childFrame) ~= "table") or (type(parentFrame) ~= "table")) then
+    print("Invalid parameter")
+    return false
+  end
+  childFrame:ClearPoint("TOPLEFT")
+  childFrame:ClearPoint("TOPRIGHT")
+  childFrame:ClearPoint("BOTTOMLEFT")
+  childFrame:ClearPoint("BOTTOMRIGHT")
+  -- Attatch child frame to bottom of parent frame.
+  if (string.lower(side) == "bottom") then
+    childFrame:SetPoint("TOPLEFT", parentFrame, "BOTTOMLEFT", 0, 0)
+    childFrame:SetPoint("TOPRIGHT", parentFrame, "BOTTOMRIGHT", 0, 0)
+  end
+  -- Attatch child frame to right of parent frame.
+  if (string.lower(side) == "right") then
+    childFrame:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", 0, 0)
+    childFrame:SetPoint("BOTTOMLEFT", parentFrame, "BOTTOMRIGHT", 0, 0)
+  end
+  return true
+end
+
+--
 -- Create a graphic border for one side of a frame.
 --
 -- @param (frame) frame  The parent frame we will be constructing a border on.

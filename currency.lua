@@ -57,7 +57,7 @@ function AOMRift.Currency:load(currency_id)
   o.id          = o.detail.id
   o.name        = o.detail.name
   o.value       = o.detail.stack
-  o.icon        = o.detail.icon or "coins_platinum.png.dds"
+  o.icon        = o.detail.icon or "Data/\\UI\\item_icons\\loot_platinum_coins.dds"
   
   return o
 end
