@@ -18,4 +18,5 @@ RunOnStartup = {
     "ui.lua",
     "achievement.lua",
     "currency.lua",
+    "item.lua",
 }
