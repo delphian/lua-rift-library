@@ -62,6 +62,7 @@ function AOMRift.Achievement:load(achievement_id)
   o.description = o.detail.description
   o.requirement = o.detail.requirement
   o.previous    = o.detail.previous
+  o.icon        = o.detail.icon
   -- Calculate some new values.
   o.current     = o:is_current()
   o.complete    = o:is_complete()

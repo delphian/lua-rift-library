@@ -2,14 +2,7 @@
 -- Helper functions for manipulating and transversing items.
 
 -- Our object.
-AOMRift.Item = {
-  detail = {},
-  category = {},
-  -- Copy of detail object.
-  id = nil,
-  name = nil,
-  icon = nil,
-}
+AOMRift.Item = {}
 
 --
 -- Determine if item identifier is valid or not.
@@ -52,10 +45,11 @@ function AOMRift.Item:Load(item_id)
 
   o.detail = Inspect.Item.Detail(item_id)
   -- Map detail record to base object.
-  o.id   = o.detail.id
-  o.name = o.detail.name
-  o.icon = o.detail.icon or "Data/\\UI\\item_icons\\loot_platinum_coins.dds"
-  o.description = o.detail.description or "none"
-  
+  o.id    = o.detail.id
+  o.name  = o.detail.name
+  o.value = o.detail.stack
+  o.icon  = o.detail.icon or "Data/\\UI\\item_icons\\loot_platinum_coins.dds"
+  o.description = o.detail.description
+
   return o
 end
