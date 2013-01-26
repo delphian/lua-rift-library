@@ -47,7 +47,7 @@ function AOMRift.Item:Load(item_id)
   -- Map detail record to base object.
   o.id    = o.detail.id
   o.name  = o.detail.name
-  o.value = o.detail.stack
+  o.value = o.detail.stack or 0
   o.icon  = o.detail.icon or "Data/\\UI\\item_icons\\loot_platinum_coins.dds"
   o.description = o.detail.description
 

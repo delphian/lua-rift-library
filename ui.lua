@@ -270,7 +270,11 @@ function AOMRift.UI:Window(title, width, height)
   window.borderLeft   = self:Border(window, "left",   1)
   window.borderRight  = self:Border(window, "right",  1)
   -- Setup content area.
-  window.content = self:Content(window, {top=10, right=1, bottom=2, left=1}, {alpha=0.5}) 
+  window.content = self:Content(window, {top=10, right=1, bottom=2, left=1}, {alpha=0})
+  window.content:SetLayer(5) 
+  -- Setup background alpha.
+  window.background = self:Content(window, {top=10, right=1, bottom=2, left=1}, {alpha=0.5})
+  window.background:SetLayer(4)
   -- Add a close button.
   self:CloseButton(window, -5, -5, 20, 20)
   return window
