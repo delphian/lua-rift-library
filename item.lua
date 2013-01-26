@@ -50,6 +50,7 @@ function AOMRift.Item:Load(item_id)
   o.value = o.detail.stack or 0
   o.icon  = o.detail.icon or "Data/\\UI\\item_icons\\loot_platinum_coins.dds"
   o.description = o.detail.description
+  o.type  = Inspect.Item.Detail(o.detail.type)
 
   return o
 end
