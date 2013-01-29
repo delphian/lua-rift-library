@@ -36,7 +36,7 @@ end
 --
 function AOMRift.Item:Load(item_id)
   if (AOMRift.Item.Exists(item_id) == false) then
-    return false
+    return nil
   end
   -- Create a self contained object.
   local o = {}
