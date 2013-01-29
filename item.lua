@@ -32,11 +32,11 @@ end
 --
 -- @return
 --   (AOMRift.Item) self contained object with item data.
---   or nil if there was an error loading.
+--   or false if there was an error loading.
 --
 function AOMRift.Item:Load(item_id)
-  if AOMRift.Item.Exists(item_id) == nil then
-    return nil
+  if (AOMRift.Item.Exists(item_id) == false) then
+    return false
   end
   -- Create a self contained object.
   local o = {}
