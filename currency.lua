@@ -52,11 +52,13 @@ function AOMRift.Currency:load(currency_id)
   self.__index = self
 
   o.detail = Inspect.Currency.Detail(currency_id)
-  o.category = Inspect.Currency.Category.Detail(o.detail.category)
+  if (o.detail.category ~= nil) then
+    o.category = Inspect.Currency.Category.Detail(o.detail.category)
+  end
   -- Map detail record to base object.
-  o.id          = o.detail.id
-  o.name        = o.detail.name
-  o.value       = o.detail.stack
+  o.id          = o.detail.id or currency_id
+  o.name        = o.detail.name or "Unknown"
+  o.value       = o.detail.stack or 0
   o.icon        = o.detail.icon or "Data/\\UI\\item_icons\\loot_platinum_coins.dds"
   
   return o
